@@ -3,7 +3,10 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import morgan = require("morgan");
 import mongoose = require("mongoose");
-import { Recipe, Recipes } from "./model";
+import recipesModule = require("./modules/recipes");
+import fs = require('fs')
+import path = require('path')
+
 
 const app = express();
 
@@ -16,62 +19,27 @@ app.use(bodyParser.json());
 
 const router = express.Router();
 
+app.use("/", router);
+
+const moduleNames = fs.readdirSync('./src/modules').filter(file => fs.statSync(path.join('./src/modules', file)).isDirectory());
+
+moduleNames.forEach((moduleName: string) => {
+
+    let module = require(`./modules/${moduleName}`);
+
+    if(module.controller) {
+        router.use('/',module.controller);
+        return moduleName;
+    }
+
+});
+
 router.get("/", (req, res) => {
     res.json({ 
-            "_links": [
-                "/recipes"
-            ] 
+            "_links": moduleNames.map(x => `/${x}`)
         });
     });
 
-router.post("/reset", (req, res) => {
-    Recipes.remove({})
-        .then(() => 
-            Recipes.create([
-                { title: 'Chicken Parmesan', url:'http://allrecipes.com/chicken_parmesan' },
-                { title: 'Boston Baked Beans', url:'http://allrecipes.com/baked_beans' },
-            ])
-        )
-        .then(_ => {
-            res.sendStatus(200);
-        })
-});
-
-
-router.get("/recipes", (req, res) => {
-    Recipes.find().exec(function(err, recipes){
-        res.send(recipes);
-    });
-});
-
-router.post("/recipes", (req, res) => {
-
-    Recipes.create({
-        title: req.body.title,
-        url: req.body.url,
-    }).then(recipe => {
-        res.setHeader("Location", recipe._link);
-        res.status(201).json(recipe);
-    });
-
-});
-
-router.get("/recipes/:id", (req, res) => {
-    console.log(`finding recipe by id ` + req.params.id);
-
-    Recipes.findById(req.params.id, function(err, recipe){
-        console.log('got response... ', err, recipe)
-
-            if(err) {
-                res.sendStatus(404);
-                return;
-            } else {
-                res.send(recipe);
-            }
-        });
-});
-
-app.use("/", router);
 
 console.log(`connecting to mongodb at ${config.mongoDbUrl}...`);
 

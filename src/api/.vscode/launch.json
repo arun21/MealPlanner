@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ts-node",
+            "protocol": "inspector",
+            "runtimeExecutable": "${workspaceRoot}\\node_modules\\.bin\\ts-node",
+            "runtimeArgs": [
+                "${workspaceRoot}\\src\\server.ts"
+            ],
+            "restart": true,
+            "port": 5858,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        }
+    ]
+}
