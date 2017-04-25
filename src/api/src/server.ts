@@ -4,11 +4,13 @@ import bodyParser = require("body-parser");
 import morgan = require("morgan");
 import mongoose = require("mongoose");
 import recipesModule = require("./modules/recipes");
-import fs = require('fs')
-import path = require('path')
-
+import fs = require('fs');
+import path = require('path');
+import cors = require ('cors');
 
 const app = express();
+
+app.use(cors());
 
 // console logging
 app.use(morgan("short"));
