@@ -1,7 +1,9 @@
-import { MealScheduleService } from './meal-schedule-service';
-import { RecipesService } from './recipes-service';
+import { RecipesStore } from './recipes-store';
+import { UserDataService } from './user-data-service';
+import { SchedulesStore } from './schedules-store'
 
 export const SERVICES = [
-    MealScheduleService,
-    RecipesService,
+    RecipesStore,
+    UserDataService,
+    SchedulesStore
 ];

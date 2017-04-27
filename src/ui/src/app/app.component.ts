@@ -3,42 +3,48 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { RecipesPage } from '../pages/recipes';
 import { SchedulePage } from '../pages/schedule';
+import { LoadingPage } from '../pages/loading';
+import { default as firebase } from 'firebase';
+import { AngularFire } from 'angularfire2';
 
 @Component({
-  templateUrl: 'app.html'
+  template: `<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>`
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = SchedulePage;
+  rootPage: any = LoadingPage;
 
-  pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    private af: AngularFire
+  ) {
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Recipes', component: RecipesPage },
-      { title: 'Schedule', component: SchedulePage }
-    ];
-
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
+
+      this.authenticate().then((user) => {
+
+        if(user) {
+          console.log(`User authenticated: ${user.uid}`)
+          this.rootPage = SchedulePage;
+        }
+
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+      })
+    })
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+  authenticate() {
+
+      return firebase.auth()
+        .signInWithEmailAndPassword('tester@test.com', 'P@SSw0rd!')
+        .catch(err => console.error(err))
   }
 }

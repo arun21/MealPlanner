@@ -12,6 +12,8 @@ export interface MealSchedule {
 }
 
 export interface MealScheduleEntry {
-    date: Date;
+    date: number;
     recipeId: string;
+    recipeName: string;
+    recipeImageUrl: string;
 }

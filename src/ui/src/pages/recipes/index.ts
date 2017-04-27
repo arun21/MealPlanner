@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
 import { Recipe } from '../../model';
+import { RecipesStore } from '../../services/recipes-store';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'page-home',
@@ -10,22 +11,16 @@ import { Recipe } from '../../model';
     </ion-header>
     <ion-content padding>
       <h2>Recipes</h2>
-      <recipe-list [recipes]="recipes" (recipeSelected)="onRecipeSelected"></recipe-list>
+      <recipe-list [recipes]="recipes | async" (recipeSelected)="onRecipeSelected"></recipe-list>
     </ion-content>
   `
 })
 export class RecipesPage {
 
-  recipes: Recipe[] = [];
+  recipes: FirebaseListObservable<Recipe[]>;
 
-  constructor(public navCtrl: NavController) {
-    this.loadRecipes()
-  }
-
-  loadRecipes() {
-    fetch('http://localhost:8080/recipes')
-      .then(resp => resp.json())
-      .then((recipes: any) => this.recipes = recipes)
+  constructor(private recipesStore: RecipesStore) {
+    this.recipes = recipesStore.recipes;
   }
 
   onRecipeSelected(recipe: Recipe) {

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ToastController } from 'ionic-angular';
-import { MealScheduleEntry } from '../../model';
-import { RecipesService } from '../../services/recipes-service';
-import { MealScheduleService } from '../../services/meal-schedule-service';
+import { MealSchedule, MealScheduleEntry } from '../../model';
+import { SchedulesStore } from '../../services/schedules-store';
+import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'schedule-page',
@@ -10,31 +10,15 @@ import { MealScheduleService } from '../../services/meal-schedule-service';
 })
 export class SchedulePage {
 
-  entries: MealScheduleEntry[];
+  schedule: FirebaseObjectObservable<MealSchedule>;
   selectedDay = new Date().getDay();
 
   constructor(
-    private recipesService: RecipesService,
-    private mealsScheduleService: MealScheduleService,
-    private toaster: ToastController
+    private schedules: SchedulesStore,
+    private toaster: ToastController,
+    private firebase: AngularFire
   ) {
-    this.loadSchedule(new Date());
-  }
-
-  async loadSchedule(date: Date) {
-    let schedule = await this.mealsScheduleService.getScheduleForWeekContaining(date);
-    let recipes = await this.recipesService.getRecipes();
-
-    this.entries = schedule.entries.map(entry => {
-
-      let recipe = recipes.find(x => x._id == entry.recipeId);
-
-      return {
-        recipeName: recipe.title,
-        recipeImageUrl: recipe.thumbnailUrl,
-        ...entry
-      }
-    });
+    this.schedule = this.schedules.getScheduleForWeekContaining(new Date());
   }
 
   selectDay(entry: MealScheduleEntry) {

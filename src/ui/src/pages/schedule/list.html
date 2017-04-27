@@ -4,8 +4,9 @@
 
 <ion-content padding>
   <h2>This Week's Meals</h2>
+  <label>{{ (item | async)?.name }}</label>
   <ion-list>
-    <button ion-item *ngFor="let entry of entries" (click)="selectDay(entry)">
+    <button ion-item *ngFor="let entry of (schedule | async)?.entries" (click)="selectDay(entry)">
       <ion-icon name="calendar" item-left></ion-icon>
       <div item-label>
         <strong>{{ entry.date | amDateFormat:'dddd' }}</strong>
