@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { SchedulePage } from '../pages/schedule';
+import { HomePage } from '../pages/home';
 import { LoadingPage } from '../pages/loading';
 import { AuthenticationService } from '../services/authentication-service';
 import { default as config } from '../config';
@@ -39,7 +39,7 @@ export class MyApp {
 
         if(user) {
           console.log(`User authenticated: ${user.uid}`)
-          this.rootPage = SchedulePage;
+          this.rootPage = HomePage;
         } else {
           // TODO: Error page
         }

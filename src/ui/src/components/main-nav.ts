@@ -4,9 +4,6 @@ import { Component, Input } from '@angular/core';
     selector: 'main-nav',
     template: `
         <ion-navbar>
-            <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-            </button>
             <ion-title>{{title}}</ion-title>
         </ion-navbar>
     `
