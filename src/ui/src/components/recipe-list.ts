@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
-export interface Recipe {
-}
+import { Recipe } from '../model';
 
 @Component({
     selector: 'recipe-list',
@@ -23,11 +21,10 @@ export interface Recipe {
 export class RecipeList {
 
     @Input() recipes: Recipe[] = [];
-
     @Output() recipeSelected: EventEmitter<Recipe> = new EventEmitter();
 
     selectRecipe(recipe: Recipe) {
-           console.log('selectRecipe: ', recipe);
- this.recipeSelected.emit(recipe);
+        console.log('selectRecipe: ', recipe);
+        this.recipeSelected.emit(recipe);
     }
 }

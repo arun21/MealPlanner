@@ -1,7 +1,9 @@
-import { SchedulePage } from './schedule';
-import { RecipesPage } from './recipes';
 import { LoadingPage } from './loading';
+import { RecipesPage } from './recipes';
+import { SchedulePage } from './schedule';
 
 export const PAGES = [
-    SchedulePage, RecipesPage, LoadingPage
+    LoadingPage,
+    RecipesPage, 
+    SchedulePage, 
 ];

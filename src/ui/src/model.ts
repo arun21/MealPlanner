@@ -1,6 +1,5 @@
 export interface Recipe {
-    _id: string;
-    _link: string;
+    id: string;
     title: string;
     url: string;
     imageUrl: string;
@@ -8,6 +7,8 @@ export interface Recipe {
 }
 
 export interface MealSchedule {
+    year: number;
+    week: number;
     entries: MealScheduleEntry[];
 }
 
@@ -16,4 +17,8 @@ export interface MealScheduleEntry {
     recipeId: string;
     recipeName: string;
     recipeImageUrl: string;
+}
+
+export interface User {
+    uid: string;
 }

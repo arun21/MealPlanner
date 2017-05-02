@@ -2,23 +2,24 @@ import { Component } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import { MealSchedule, MealScheduleEntry } from '../../model';
 import { SchedulesStore } from '../../services/schedules-store';
-import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'schedule-page',
   templateUrl: 'list.html'
 })
 export class SchedulePage {
-
-  schedule: FirebaseObjectObservable<MealSchedule>;
-  selectedDay = new Date().getDay();
+  schedule: Observable<MealSchedule>;
 
   constructor(
     private schedules: SchedulesStore,
-    private toaster: ToastController,
-    private firebase: AngularFire
+    private toaster: ToastController
   ) {
-    this.schedule = this.schedules.getScheduleForWeekContaining(new Date());
+    this.schedule = schedules.getScheduleForWeekContaining(new Date());
+  }
+
+  date(entry: MealScheduleEntry) {
+    return new Date(entry.date);
   }
 
   selectDay(entry: MealScheduleEntry) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Recipe } from '../../model';
 import { RecipesStore } from '../../services/recipes-store';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'page-home',
@@ -17,7 +17,7 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'a
 })
 export class RecipesPage {
 
-  recipes: FirebaseListObservable<Recipe[]>;
+  recipes: Observable<Recipe[]>;
 
   constructor(private recipesStore: RecipesStore) {
     this.recipes = recipesStore.recipes;
