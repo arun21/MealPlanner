@@ -3,7 +3,17 @@ export interface Recipe {
     title: string;
     url: string;
     imageUrl: string;
-    thumbnailUrl: string;
+    thumbnailUrl?: string;
+    prepTime?: number;
+    cookTime?: number;
+    totalTime?: number;
+    servings?: number;
+    calories?: number;
+    myRating?: number;
+    socialRating?: number;
+    ingredients: [string|{ amount: string, name: string }];
+    directions: string[];
+    notes?: string;
 }
 
 export interface MealSchedule {
