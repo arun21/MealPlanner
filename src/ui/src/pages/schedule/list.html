@@ -3,19 +3,30 @@
     <ion-title>This Week's Meals</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content padding>
   <ion-list>
-    <button ion-item *ngFor="let entry of (schedule | async)?.entries" (click)="selectDay(entry)">
-      <ion-icon name="calendar" item-left></ion-icon>
-      <div item-label>
-        <strong>{{ date(entry) | amDateFormat:'dddd' }}</strong>
-        <span>- {{ date(entry) | amDateFormat:'LL' }}</span>
-        <div>{{ entry.recipeName }}</div>
-      </div>
-      <ion-thumbnail item-content>
-        <img [src]="entry.recipeImageUrl" />
-      </ion-thumbnail>
-    </button>
+    <ion-item-sliding #entryContainer *ngFor="let entry of (schedule | async)?.entries">
+      <ion-item (click)="selectDay(entry)">
+        <ion-icon name="calendar" item-left></ion-icon>
+        <div item-label>
+          <strong>{{ date(entry) | amDateFormat:'dddd' }}</strong>
+          <span>- {{ date(entry) | amDateFormat:'MMM Do' }}</span>
+          <div>{{ entry.recipeName }}</div>
+        </div>
+        <ion-thumbnail item-content>
+          <img [src]="entry.recipeImageUrl" />
+        </ion-thumbnail>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button expandable (click)="replace(entry); entryContainer.close();">
+          <ion-icon name="swap"></ion-icon>
+          Replace
+        </button>
+        <button ion-button expandable (click)="eatOut(entry); entryContainer.close();">
+          <ion-icon name="cash"></ion-icon>
+          Eat Out
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

@@ -9,6 +9,7 @@ import { SafePipe } from './safe-pipe';
 import { MyApp } from './app.component';
 import { COMPONENTS } from '../components';
 import { PAGES } from '../pages';
+import { ACTIONS } from '../actions';
 import { SERVICES } from '../services';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -43,6 +44,7 @@ export const firebaseConfig = {
     PAGES
   ],
   providers: [
+    ACTIONS,
     StatusBar,
     SplashScreen,
     SERVICES,
