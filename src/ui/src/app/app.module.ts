@@ -3,7 +3,9 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MomentModule } from 'angular2-moment';
 import { AngularFireModule } from 'angularfire2';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
+import { SafePipe } from './safe-pipe';
 import { MyApp } from './app.component';
 import { COMPONENTS } from '../components';
 import { PAGES } from '../pages';
@@ -26,7 +28,8 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     PAGES,
-    COMPONENTS
+    COMPONENTS,
+    SafePipe
   ],
   imports: [
     MomentModule,
@@ -43,6 +46,7 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     SERVICES,
+    InAppBrowser,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

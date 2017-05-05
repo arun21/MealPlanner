@@ -5,16 +5,14 @@ import { Recipe } from '../model';
     selector: 'recipe-list',
     template: `
         <ion-list>
-
             <button ion-item *ngFor="let recipe of recipes" (click)="selectRecipe(recipe)">
-            
-            <div item-note>
-                <img height="200px" [src]="recipe.thumbnailUrl"/>
-                <h3>{{recipe.title}}</h3>
-            </div>
-            
+                <div item-label>
+                    <div>{{ recipe.title }}</div>
+                </div>
+                <ion-thumbnail item-content>
+                    <img [src]="recipe.thumbnailUrl" />
+                </ion-thumbnail>
             </button>
-
         </ion-list>
     `
 })

@@ -1,9 +1,10 @@
-<ion-header>
-  <main-nav></main-nav>
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-title>This Week's Meals</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>This Week's Meals</h2>
   <ion-list>
     <button ion-item *ngFor="let entry of (schedule | async)?.entries" (click)="selectDay(entry)">
       <ion-icon name="calendar" item-left></ion-icon>

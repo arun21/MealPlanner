@@ -4,10 +4,10 @@ import { Recipe } from '../model';
 @Component({
     selector: 'recipe',
     template: `
-        <div>
+        <div text-center>
+            <ion-img [src]="recipe.imageUrl" [alt]="recipe.title"></ion-img>
             <h3>{{recipe.title}}</h3>
-            <p><a [href]="recipe.url">{{urlDisplayName(recipe)}}</a></p>
-            <ion-img [src]="recipe.imageUrl" width="80%" [alt]="recipe.title"></ion-img>
+            <p><a [href]="recipe.url" target="_system">{{urlDisplayName}}</a></p>
         </div>
         <div>
             <h4>Ingredients</h4>
@@ -21,8 +21,9 @@ import { Recipe } from '../model';
 })
 export class RecipeViewer {
     @Input() recipe: Recipe;
+    @Output() onViewExternal = new EventEmitter();
 
-    urlDisplayName(recipe: Recipe) {
-        return /\/\/([^\/]*)/.exec(recipe.url)[1];
+    get urlDisplayName() {
+        return /\/\/([^\/]*)/.exec(this.recipe.url)[1];
     }
 }

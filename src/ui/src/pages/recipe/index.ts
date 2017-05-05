@@ -8,11 +8,18 @@ import { IonicPage, NavParams } from 'ionic-angular';
 @Component({
   selector: 'recipe-page',
   template: `
-    <ion-header>
-      <button ion-button navPop>Go Back</button>
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons start> 
+          <button ion-button icon-left navPop>
+            <ion-icon name="arrow-back"></ion-icon>
+            Back
+          </button>
+        </ion-buttons>
+        <ion-title>{{(recipe | async)?.title}}</ion-title>
+      </ion-toolbar>
     </ion-header>
     <ion-content padding>
-      <h2>Recipe</h2>
       <recipe [recipe]="recipe | async"></recipe>
     </ion-content>
   `

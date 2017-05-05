@@ -6,7 +6,7 @@ import { ShoppingPage } from './shopping';
 @Component({
   selector: 'home-page',
   template: `
-    <ion-tabs selectedIndex="1">
+    <ion-tabs selectedIndex="0">
       <ion-tab [root]="recipes" tabTitle="Recipes" tabIcon="paper"></ion-tab>
       <ion-tab [root]="schedule" tabTitle="Schedule" tabIcon="calendar"></ion-tab>
       <ion-tab [root]="shopping" tabTitle="Shopping" tabIcon="cart"></ion-tab>
