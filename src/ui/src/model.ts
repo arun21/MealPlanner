@@ -11,7 +11,7 @@ export interface Recipe {
     calories?: number;
     myRating?: number;
     socialRating?: number;
-    ingredients: [string|{ amount: string, name: string }];
+    ingredients: string[];
     directions: string[];
     notes?: string;
 }
@@ -31,4 +31,9 @@ export interface MealScheduleEntry {
 
 export interface User {
     uid: string;
+}
+
+export interface ShoppingListEntry {
+    name: string;
+    amount: string;
 }
