@@ -19,7 +19,10 @@ export class SchedulesStore {
     }
 
     getScheduleForWeek(week: number, year: number = new Date().getFullYear()): Observable<MealSchedule> {
-        return this.userData.object<MealSchedule>(`/schedules/${year}/${week}`);
+        return this.userData.object<MealSchedule>(`/schedules/${year}/${week}`)
+                            .map(entries => <MealSchedule>{
+                                entries: entries
+                            });
     }
 
 }
