@@ -15,7 +15,10 @@ export class ShoppingListStore {
     }
 
     getShoppingListForWeekContaining(date: Date): Observable<ShoppingListEntry[]> {
-        return this.recipes
-            .flatMap(recipes => recipes.map(recipe => recipe.ingredients.map(ingredient => ({ name: ingredient }))));
+        return this.recipes.search(null).flatMap(recipes => 
+            recipes.map(recipe => 
+                recipe.ingredients.map(ingredient => ({ name: ingredient }))
+            )
+        );
     }
 }

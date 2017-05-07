@@ -15,15 +15,7 @@ import { SERVICES } from '../services';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyAf5Vb7N3nF0Nxb1Qy_A2ojYQWZHihziKQ",
-  authDomain: "buffetbot-1733f.firebaseapp.com",
-  databaseURL: "https://buffetbot-1733f.firebaseio.com",
-  projectId: "buffetbot-1733f",
-  storageBucket: "buffetbot-1733f.appspot.com",
-  messagingSenderId: "971436743545"
-};
-
+import {default as config } from '../config';
 
 @NgModule({
   declarations: [
@@ -36,7 +28,7 @@ export const firebaseConfig = {
     MomentModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(config.firebase)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

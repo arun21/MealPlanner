@@ -6,18 +6,11 @@ import { Injectable } from '@angular/core';
 import { MealSchedule } from '../model';
 import { UserDataService } from './user-data-service';
 import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { default as config } from '../config';
-import { default as stubData } from './stubData';
 
 @Injectable()
-export class SchedulesStore extends BehaviorSubject<MealSchedule[]> {
+export class SchedulesStore {
 
     constructor(private userData: UserDataService) {
-        super(stubData.schedules);
-
-        if (!config.stubMode)
-            this.source = this.userData.list('/schedules');
     }
 
     getScheduleForWeekContaining(date: Date): Observable<MealSchedule> {
@@ -26,7 +19,7 @@ export class SchedulesStore extends BehaviorSubject<MealSchedule[]> {
     }
 
     getScheduleForWeek(week: number, year: number = new Date().getFullYear()): Observable<MealSchedule> {
-        return this.flatMap(x => x).first(x => x.year === year && x.week === week);
+        return this.userData.object<MealSchedule>(`/schedules/${year}/${week}`);
     }
 
 }

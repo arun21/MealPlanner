@@ -30,8 +30,11 @@ export interface MealScheduleEntry {
 }
 
 export interface User {
+    displayName: string;
+    email: string;
+    photoURL: string;
     uid: string;
-}
+  }
 
 export interface ShoppingListEntry {
     name: string;

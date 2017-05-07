@@ -9,19 +9,18 @@ export class UserDataService {
     constructor(private af: AngularFire) {
     }
 
-    list(urlOrRef: string | firebase.database.Reference, opts?: FirebaseListFactoryOpts): FirebaseListObservable<any[]> {
+    list<T>(urlOrRef: string | firebase.database.Reference, opts?: FirebaseListFactoryOpts): FirebaseListObservable<T[]> {
         return this.af.database.list(this.userPath(urlOrRef), opts);
     }
 
-    object(urlOrRef: string | firebase.database.Reference, opts?: FirebaseObjectFactoryOpts): FirebaseObjectObservable<any> {
+    object<T>(urlOrRef: string | firebase.database.Reference, opts?: FirebaseObjectFactoryOpts): FirebaseObjectObservable<T> {
         return this.af.database.object(this.userPath(urlOrRef), opts);
     }
 
     private userPath(urlOrRef: string | firebase.database.Reference) {
         if(typeof urlOrRef === "string") {
-            let auth = firebase.auth();
-            let user = auth && auth.currentUser;
-            if(!user) throw 'User not authenticated'
+            let user = firebase.auth().currentUser;
+            if(!user) throw 'User not authenticated!';
             return `/users/${user.uid}${urlOrRef}`;
         }
         

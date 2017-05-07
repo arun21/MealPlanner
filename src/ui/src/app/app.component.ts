@@ -4,8 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home';
 import { LoadingPage } from '../pages/loading';
-import { AuthenticationService } from '../services/authentication-service';
-import { default as config } from '../config';
+import { UserStore } from '../services/user-store';
+import { SchedulesStore } from '../services/schedules-store';
 
 @Component({
   template: `<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>`
@@ -19,13 +19,9 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private auth: AuthenticationService
+    private user: UserStore,
+    private schedules: SchedulesStore
   ) {
-
-    if(config.stubMode) {
-      console.warn('STUB MODE')
-    }
-    
     this.initializeApp();
   }
 
@@ -36,7 +32,7 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.auth.authenticate('tester@test.com', 'P@SSw0rd!').then((user) => {
+      this.user.subscribe((user) => {
 
         if(user) {
           console.log(`User authenticated: ${user.uid}`)
@@ -45,6 +41,8 @@ export class MyApp {
           // TODO: Error page
         }
       })
+
+      this.user.authenticate('tester@test.com', 'P@SSw0rd!');
     })
   }
 
