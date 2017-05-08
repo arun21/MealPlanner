@@ -11,15 +11,16 @@ export class UserStore extends BehaviorSubject<User> {
         super(null);
     }
 
-    async authenticate(email: string, password: string): Promise<void> {
+    authenticate(email: string, password: string): Promise<void> {
         firebase.auth().onAuthStateChanged(user => {
             this.next(user);
         });
 
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(e => 
-            Raven.captureException(e)
-        );
-;
+        return <Promise<void>>firebase.auth()
+            .signInWithEmailAndPassword(email, password)
+            .catch(e => 
+                Raven.captureException(e)
+            );
     }
 
 }

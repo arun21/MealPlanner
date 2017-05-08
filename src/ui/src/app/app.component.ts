@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home';
 import { LoadingPage } from '../pages/loading';
 import { UserStore } from '../services/user-store';
 import { SchedulesStore } from '../services/schedules-store';
+import { LoginPage } from "../pages/login";
 
 @Component({
   template: `<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>`
@@ -30,9 +31,6 @@ export class MyApp {
 
     this.platform.ready().then(() => {
 
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-
       this.user.subscribe((user) => {
 
         if(!user) return;
@@ -47,9 +45,12 @@ export class MyApp {
 
         this.rootPage = HomePage;
         
-      })
+      });
 
-      this.user.authenticate('tester@test.com', 'P@SSw0rd!');
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+
+      this.rootPage = LoginPage;
     })
   }
 
