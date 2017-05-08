@@ -2,13 +2,12 @@ import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 import { IAction } from './action';
 import { UserDataService } from '../services/user-data-service';
+import { RecipesStore } from '../services/recipes-store';
 import { MealScheduleEntry } from '../model';
 
 export interface EatOutActionParams {
     date: number;
 }
-
-const EatOutRecipeId = '0';
 
 @Injectable()
 export class EatOutAction implements IAction<EatOutActionParams> {
@@ -25,9 +24,9 @@ export class EatOutAction implements IAction<EatOutActionParams> {
         let schedule = this.userData.object<MealScheduleEntry>(`/schedules/${year}/${week}/${day}`);
 
         schedule.update({ 
-            recipeId: EatOutRecipeId,
-            recipeName: 'EAT OUT',
-            recipeImageUrl: null
+            recipeId: RecipesStore.EatOutRecipe.id,
+            recipeName: RecipesStore.EatOutRecipe.title,
+            recipeImageUrl: RecipesStore.EatOutRecipe.imageUrl,
         });
     }
 

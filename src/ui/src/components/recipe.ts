@@ -38,6 +38,7 @@ export class RecipeViewer {
     @Output() onViewExternal = new EventEmitter();
 
     get urlDisplayName() {
-        return /\/\/([^\/]*)/.exec(this.recipe.url)[1];
+        let url = this.recipe.url;
+        return /\/\/([^\/]*)/.exec(url ? url : 'http:// ' )[1];
     }
 }

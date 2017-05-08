@@ -3,16 +3,26 @@ import { Recipe } from '../model';
 import { UserDataService } from './user-data-service';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
+
+const EatOutRecipe = { id: '0', title: 'Eat Out'};
 
 @Injectable()
 export class RecipesStore {
+
+    static get EatOutRecipe() {
+        return JSON.parse(JSON.stringify(EatOutRecipe));
+    }
 
     constructor(private userData: UserDataService) {
     }
 
     getRecipe(recipeId: string): Observable<Recipe> {
+        if(recipeId == EatOutRecipe.id) {
+            return Observable.of(RecipesStore.EatOutRecipe);
+        }
+
         return this.userData.object<Recipe>(`/recipes/${recipeId}`);
     }
 
