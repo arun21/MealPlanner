@@ -1,30 +1,34 @@
+import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 import { IAction } from './action';
-import { ToastController } from "ionic-angular";
-
+import { UserDataService } from '../services/user-data-service';
+import { MealScheduleEntry } from '../model';
 
 export interface EatOutActionParams {
     date: number;
 }
 
+const EatOutRecipeId = '0';
+
 @Injectable()
 export class EatOutAction implements IAction<EatOutActionParams> {
 
-    constructor(private toaster: ToastController) {
+    constructor(private userData: UserDataService) {
     }
 
-    execute(params: EatOutActionParams): Promise<void> {
-        const message = `Eating Out on ${new Date(params.date).toDateString()} (coming soon!)`;
+    async execute(params: EatOutActionParams): Promise<void> {
+        const date = moment(params.date),
+              year = date.year(),
+              week = date.week(),
+              day = date.day();
 
-        console.debug(message);
+        let schedule = this.userData.object<MealScheduleEntry>(`/schedules/${year}/${week}/${day}`);
 
-        this.toaster.create({ 
-            message: message,
-            duration: 2000,
-            position: 'middle'
-        }).present();
-
-        return Promise.resolve();
+        schedule.update({ 
+            recipeId: EatOutRecipeId,
+            recipeName: 'EAT OUT',
+            recipeImageUrl: null
+        });
     }
 
 }
