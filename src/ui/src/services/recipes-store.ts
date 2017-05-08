@@ -6,7 +6,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 
-const EatOutRecipe = { id: '0', title: 'Eat Out', imageUrl: null };
+const EatOutRecipe = { id: '0', title: 'Eat Out', imageUrl: '' };
 
 @Injectable()
 export class RecipesStore {
