@@ -11,9 +11,15 @@ export interface Recipe {
     calories?: number;
     myRating?: number;
     socialRating?: number;
-    ingredients: string[];
+    ingredients: (string | Ingredient)[];
     directions: string[];
     notes?: string;
+}
+
+export interface Ingredient {
+    name: string;
+    unit?: string;
+    quantity?: string;
 }
 
 export interface MealSchedule {
@@ -34,7 +40,7 @@ export interface User {
     email: string;
     photoURL: string;
     uid: string;
-  }
+}
 
 export interface ShoppingListEntry {
     name: string;

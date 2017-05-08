@@ -21,7 +21,7 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private user: UserStore,
-    private schedules: SchedulesStore
+    private schedules: SchedulesStore,
   ) {
     this.initializeApp();
   }
