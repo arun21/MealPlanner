@@ -1,3 +1,4 @@
+import * as Raven from 'raven-js';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -34,12 +35,18 @@ export class MyApp {
 
       this.user.subscribe((user) => {
 
-        if(user) {
-          console.log(`User authenticated: ${user.uid}`)
-          this.rootPage = HomePage;
-        } else {
-          // TODO: Error page
-        }
+        if(!user) return;
+
+        console.log(`User authenticated: ${user.uid}`)
+
+        Raven.setUserContext({
+          id: user.uid,
+          email: user.email,
+          username: user.displayName,
+        });
+
+        this.rootPage = HomePage;
+        
       })
 
       this.user.authenticate('tester@test.com', 'P@SSw0rd!');

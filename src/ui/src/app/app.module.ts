@@ -1,3 +1,4 @@
+import * as Raven from 'raven-js';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -16,6 +17,16 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import {default as config } from '../config';
+
+Raven
+  .config(config.sentryIo.dsn, config.sentryIo.options)
+  .install();
+
+export class RavenErrorHandler extends IonicErrorHandler  {
+  handleError(err:any) : void {
+    Raven.captureException(err.originalError || err);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -41,7 +52,7 @@ import {default as config } from '../config';
     SplashScreen,
     SERVICES,
     InAppBrowser,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: RavenErrorHandler }
   ]
 })
 export class AppModule { }
