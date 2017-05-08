@@ -1,9 +1,7 @@
-import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 import { IAction } from './action';
-import { UserDataService } from '../services/user-data-service';
+import { ReplaceMealAction } from './replace-meal-action';
 import { RecipesStore } from '../services/recipes-store';
-import { MealScheduleEntry } from '../model';
 
 export interface EatOutActionParams {
     date: number;
@@ -12,21 +10,13 @@ export interface EatOutActionParams {
 @Injectable()
 export class EatOutAction implements IAction<EatOutActionParams> {
 
-    constructor(private userData: UserDataService) {
+    constructor(private replaceMeal: ReplaceMealAction) {
     }
 
     async execute(params: EatOutActionParams): Promise<void> {
-        const date = moment(params.date),
-              year = date.year(),
-              week = date.week(),
-              day = date.day();
-
-        let schedule = this.userData.object<MealScheduleEntry>(`/schedules/${year}/${week}/${day}`);
-
-        schedule.update({ 
-            recipeId: RecipesStore.EatOutRecipe.id,
-            recipeName: RecipesStore.EatOutRecipe.title,
-            recipeImageUrl: RecipesStore.EatOutRecipe.imageUrl,
+        this.replaceMeal.execute({
+            date: params.date,
+            recipeId: RecipesStore.EatOutRecipe.id
         });
     }
 

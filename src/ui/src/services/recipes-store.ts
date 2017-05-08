@@ -6,7 +6,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 
-const EatOutRecipe = { id: '0', title: 'Eat Out'};
+const EatOutRecipe = { id: '0', title: 'Eat Out', imageUrl: null };
 
 @Injectable()
 export class RecipesStore {
@@ -26,7 +26,16 @@ export class RecipesStore {
         return this.userData.object<Recipe>(`/recipes/${recipeId}`);
     }
 
-    search(filter: string): Observable<Recipe[]> {
+    randomRecipe(): Observable<Recipe> {
+        
+        return this.search()
+                    .map(recipes => 
+                        recipes[Math.floor(Math.random() * recipes.length)]
+                    );
+
+    }
+
+    search(filter?: string): Observable<Recipe[]> {
 
         let recipes = this.userData.list<Recipe[]>('/recipes');
 

@@ -37,11 +37,11 @@ export class SchedulePage {
   }
 
   eatOut(entry: MealScheduleEntry) {
-      this.eatOutAction.execute(entry);
+      this.eatOutAction.execute({ date: entry.date });
   }
 
   replace(entry: MealScheduleEntry) {
-      this.replaceMealAction.execute(entry);
+      this.replaceMealAction.execute({ date: entry.date });
   }
 
 }
