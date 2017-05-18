@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastController, ModalController, IonicPage } from 'ionic-angular';
-import { MealSchedule, MealScheduleEntry } from '../../model';
+import { MealScheduleEntry } from '../../model';
 import { SchedulesStore } from '../../services/schedules-store';
 import { Observable } from "rxjs/Observable";
 import { RecipePage } from "../recipe";
@@ -13,7 +13,7 @@ import { ReplaceMealAction } from '../../actions/replace-meal-action';
   templateUrl: 'list.html'
 })
 export class SchedulePage {
-  schedule: Observable<MealSchedule>;
+  schedule: Observable<MealScheduleEntry[]>;
 
   constructor(
     private schedules: SchedulesStore,
@@ -23,6 +23,12 @@ export class SchedulePage {
     private replaceMealAction: ReplaceMealAction,
   ) {
     this.schedule = schedules.getScheduleForWeekContaining(new Date());
+
+    this.schedule.subscribe(x => {
+      if(!(x && x.length)) {
+        schedules.generateScheduleForWeekContaining(new Date());
+      }
+    });
   }
 
   date(entry: MealScheduleEntry) {

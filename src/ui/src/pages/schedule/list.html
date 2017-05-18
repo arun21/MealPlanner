@@ -3,9 +3,22 @@
     <ion-title>This Week's Meals</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content padding>
-  <ion-list>
-    <ion-item-sliding #entryContainer *ngFor="let entry of (schedule | async)?.entries">
+<ion-content padding [ngSwitch]="(schedule | async)?.length">
+
+  <ion-card *ngSwitchCase="0">
+
+    <ion-card-header text-center>
+      Couldn't find a schedule for this week!
+    </ion-card-header>
+
+    <ion-card-content text-center>
+      That's a real bummer.  Someone should probably make one for you!
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-list *ngSwitchDefault>
+    <ion-item-sliding #entryContainer *ngFor="let entry of schedule | async">
       <ion-item (click)="selectDay(entry)">
         <ion-icon name="calendar" item-left></ion-icon>
         <div item-label>
