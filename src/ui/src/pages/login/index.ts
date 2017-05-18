@@ -34,8 +34,7 @@ export class LoginPage {
   }
 
   loginAs(user: LoginUser) {
-    this.auth.authenticate(user.email, user.password)
-      .catch(e => { throw 'Unable to login!' });
+    this.auth.authenticate(user.email, user.password);
   }
 
 }

@@ -6,7 +6,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home';
 import { LoadingPage } from '../pages/loading';
 import { UserStore } from '../services/user-store';
-import { SchedulesStore } from '../services/schedules-store';
 import { LoginPage } from "../pages/login";
 
 @Component({
@@ -22,7 +21,6 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private user: UserStore,
-    private schedules: SchedulesStore,
   ) {
     this.initializeApp();
   }
@@ -33,24 +31,23 @@ export class MyApp {
 
       this.user.subscribe((user) => {
 
-        if(!user) return;
+        if(user && user.uid) {
+          console.log(`User authenticated: ${user.uid}`)
 
-        console.log(`User authenticated: ${user.uid}`)
+          Raven.setUserContext({
+            id: user.uid,
+            email: user.email,
+            username: user.displayName,
+          });
 
-        Raven.setUserContext({
-          id: user.uid,
-          email: user.email,
-          username: user.displayName,
-        });
-
-        this.rootPage = HomePage;
-        
+          this.rootPage = HomePage;
+        } else {
+          this.rootPage = LoginPage;
+        }
       });
 
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
-      this.rootPage = LoginPage;
     })
   }
 

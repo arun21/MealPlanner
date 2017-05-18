@@ -1,10 +1,12 @@
 import * as Raven from 'raven-js';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MomentModule } from 'angular2-moment';
 import { AngularFireModule } from 'angularfire2';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { default as firebase } from 'firebase';
 
 import { SafePipe } from './safe-pipe';
 import { MyApp } from './app.component';
@@ -17,6 +19,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import {default as config } from '../config';
+
+firebase.initializeApp(config.firebase);
 
 Raven
   .config(config.sentryIo.dsn, config.sentryIo.options)
@@ -39,7 +43,8 @@ export class RavenErrorHandler extends IonicErrorHandler  {
     MomentModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(config.firebase)
+    AngularFireModule.initializeApp(config.firebase),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -52,7 +57,7 @@ export class RavenErrorHandler extends IonicErrorHandler  {
     SplashScreen,
     SERVICES,
     InAppBrowser,
-    { provide: ErrorHandler, useClass: RavenErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
 export class AppModule { }
