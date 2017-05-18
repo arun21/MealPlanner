@@ -3,8 +3,8 @@ import { Recipe } from '../model';
 import { UserDataService } from './user-data-service';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/of';
 
 const EatOutRecipe = { id: '0', title: 'Eat Out', imageUrl: '' };
 
@@ -23,7 +23,10 @@ export class RecipesStore {
             return Observable.of(RecipesStore.EatOutRecipe);
         }
 
-        return this.userData.object<Recipe>(`/recipes/${recipeId}`);
+        let query = this.userData.list<Recipe>(`/recipes`, { query: { orderByChild: 'id', equalTo: recipeId, limitToFirst: 1 }});
+        let first = query.map(x => x[0]);
+
+        return first;
     }
 
     randomRecipe(): Observable<Recipe> {

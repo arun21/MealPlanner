@@ -20,7 +20,7 @@ import { IonicPage, NavParams } from 'ionic-angular';
       </ion-toolbar>
     </ion-header>
     <ion-content padding>
-      <recipe [recipe]="recipe | async"></recipe>
+      <recipe [recipe]="(recipe | async)"></recipe>
     </ion-content>
   `
 })

@@ -4,7 +4,7 @@ import { RecipesStore } from '../../services/recipes-store';
 import { Observable } from "rxjs/Observable";
 import { IonicPage, ModalController } from 'ionic-angular';
 import { RecipePage } from "../recipe";
-import { RecipeBrowserPage } from "../recipe-browser";
+import { RecipeSearchPage } from "../recipe-search";
 
 @IonicPage()
 @Component({
@@ -30,12 +30,12 @@ import { RecipeBrowserPage } from "../recipe-browser";
 })
 export class RecipesPage {
 
-  @Input()filter: string = '';
+  @Input() filter: string = '';
   recipes: Observable<Recipe[]>;
 
   constructor(
     private store: RecipesStore,
-    public modal: ModalController
+    public modal: ModalController,
   ) {
     this.applyFilter(this.filter);
   }
@@ -45,14 +45,14 @@ export class RecipesPage {
   }
 
   onRecipeSelected(recipe: Recipe) {
-    this.modal.create(RecipePage, { 
-        recipeId: recipe.id 
-      })
+    this.modal.create(RecipePage, {
+      recipeId: recipe.id
+    })
       .present();
   }
 
   importFromWeb() {
-    this.modal.create(RecipeBrowserPage).present();
+    this.modal.create(RecipeSearchPage).present();
   }
 
 }

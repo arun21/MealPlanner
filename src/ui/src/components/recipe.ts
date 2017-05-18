@@ -4,6 +4,7 @@ import { Recipe } from '../model';
 @Component({
     selector: 'recipe',
     template: `
+    <div *ngIf="recipe; else elseBlock">
         <div text-center>
             <ion-img [src]="recipe.imageUrl" [alt]="recipe.title"></ion-img>
             <h3>{{recipe.title}}</h3>
@@ -31,6 +32,12 @@ import { Recipe } from '../model';
                 {{recipe.notes}}
             </ion-item>
         </ion-list>
+    </div>
+     <ng-template #elseBlock>
+        <div text-center>
+            <ion-spinner></ion-spinner>
+        </div>
+     </ng-template>
     `
 })
 export class RecipeViewer {

@@ -11,8 +11,8 @@ export interface Recipe {
     calories?: number;
     myRating?: number;
     socialRating?: number;
-    ingredients: (string | Ingredient)[];
-    directions: string[];
+    ingredients?: (string | Ingredient)[];
+    directions?: string[];
     notes?: string;
 }
 
