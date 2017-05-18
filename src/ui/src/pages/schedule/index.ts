@@ -6,6 +6,7 @@ import { Observable } from "rxjs/Observable";
 import { RecipePage } from "../recipe";
 import { EatOutAction } from '../../actions/eat-out-action';
 import { ReplaceMealAction } from '../../actions/replace-meal-action';
+import { GenerateScheduleAction } from '../../actions/generate-schedule-action';
 
 @IonicPage()
 @Component({
@@ -21,8 +22,19 @@ export class SchedulePage {
     public modal: ModalController,
     private eatOutAction: EatOutAction,
     private replaceMealAction: ReplaceMealAction,
+    private generateScheduleAction: GenerateScheduleAction,
   ) {
-    this.schedule = schedules.getScheduleForWeekContaining(new Date());
+    let today = new Date();
+
+    this.schedule = schedules.getScheduleForWeekContaining(today);
+
+    this.schedule.subscribe(entries => {
+      
+      if(!entries || !entries.length) {
+        generateScheduleAction.execute({ date: today });
+      }
+
+    });
   }
 
   date(entry: MealScheduleEntry) {

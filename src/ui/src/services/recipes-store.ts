@@ -28,11 +28,12 @@ export class RecipesStore {
 
     randomRecipe(): Observable<Recipe> {
         
-        return this.search()
-                    .map(recipes => 
-                        recipes[Math.floor(Math.random() * recipes.length)]
-                    );
+        return this.search().map(this.getRandomRecipe);
 
+    }
+
+    getRandomRecipe(recipes: Recipe[]) {
+        return recipes[Math.floor(Math.random() * recipes.length)];
     }
 
     search(filter?: string): Observable<Recipe[]> {
