@@ -23,12 +23,6 @@ export class SchedulePage {
     private replaceMealAction: ReplaceMealAction,
   ) {
     this.schedule = schedules.getScheduleForWeekContaining(new Date());
-
-    this.schedule.subscribe(x => {
-      if(!(x && x.length)) {
-        schedules.generateScheduleForWeekContaining(new Date());
-      }
-    });
   }
 
   date(entry: MealScheduleEntry) {
