@@ -1,0 +1,19 @@
+{
+  "name": "buffetbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://buffetbot.scm.azurewebsites.net/buffetbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "moment": "^2.18.1",
+    "node-fetch": "^1.6.3",
+    "request": "^2.81.0"
+  }
+}
