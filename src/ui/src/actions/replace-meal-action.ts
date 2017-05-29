@@ -1,7 +1,6 @@
 import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 import { IAction } from './action';
-import { ToastController } from "ionic-angular";
 import { RecipesStore } from '../services/recipes-store';
 import { UserDataService } from '../services/user-data-service';
 import { Recipe, MealScheduleEntry } from '../model';
@@ -16,7 +15,6 @@ export interface ReplaceMealActionParams {
 export class ReplaceMealAction implements IAction<ReplaceMealActionParams> {
 
     constructor(
-        private toaster: ToastController,
         private recipes: RecipesStore,
         private userData: UserDataService
     ) {
