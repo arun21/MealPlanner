@@ -22,10 +22,6 @@ import {default as config } from '../config';
 
 firebase.initializeApp(config.firebase);
 
-Raven
-  .config(config.sentryIo.dsn, config.sentryIo.options)
-  .install();
-
 export class RavenErrorHandler extends IonicErrorHandler  {
   handleError(err:any) : void {
     Raven.captureException(err.originalError || err);
