@@ -1,10 +1,12 @@
+import { default as config } from '../config';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Recipe } from '../model';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
-import { default as stubData } from './stubData';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/toPromise';
 
 export interface RecipeSearchResult {
     page: number;
@@ -25,6 +27,7 @@ recipes: List of Recipe Parameters ->
 	page: The page number that is being returned (To keep track of concurrent requests)
 */
 interface Food2ForkRecipeSearchResult {
+    recipe_id: number;
     image_url: string;
     source_url: string;
     f2f_url: string;
@@ -41,15 +44,27 @@ interface Food2ForkSearchResult {
     recipes: Food2ForkRecipeSearchResult[]
 }
 
+interface Food2ForkGetRecipeResult {
+    recipe: Food2ForkRecipeSearchResult
+}
+
 const mapToRecipe = (src: Food2ForkRecipeSearchResult): Recipe => {
     return {
         imageUrl: src.image_url,
         thumbnailUrl: src.image_url,
         url: src.source_url,
-        id: src.f2f_url,
+        id: src.recipe_id ? src.recipe_id.toString() : null,
         title: src.title,
         socialRating: src.social_rank,
         ingredients: src.ingredients
+    }
+}
+
+function opts() {
+    return {
+        headers: new Headers({
+            "x-functions-key": config.recipeSearch.apiKey
+        })
     }
 }
 
@@ -59,19 +74,23 @@ export class RecipeSearchService {
     constructor(private http: Http) {
     }
 
-    get({ id }): Observable<Recipe> {
-        return Observable.of(new Response({ url: '', merge: null, status: 200, body: stubData.searchResult.recipes.find(x => x.f2f_url == id), headers: new Headers() }))
-        //return this.http.get(`https://buffetbot.azurewebsites.net/api/HttpTriggerJS1?code=ymRrKp/2a5uVuBL49rI2LKlMjYaJohpP9cKVfRvt5tc2TTBUHvx73Q==&page=${page}&q=${query}`)
-                .map<Response, Food2ForkRecipeSearchResult>(resp => resp.json())
-                .map<Food2ForkRecipeSearchResult, Recipe>(mapToRecipe);
+    get({ id }): Promise<Recipe> {
+        return this.http.get(`https://buffetbot.azurewebsites.net/recipes/${id}`, opts())
+                .map<Response, Food2ForkGetRecipeResult>(resp => resp.json())
+                .map<Food2ForkGetRecipeResult, Recipe>(result => mapToRecipe(result.recipe))
+                .first()
+                .toPromise();
     }
 
     search(query: string, page: number = 1): Observable<RecipeSearchResult> {
 
+        if(!query || !query.length) {
+            return Observable.of({});
+        }
+
         console.log('recipe search for '+ query)
 
-        return Observable.of(new Response({ url: '', merge: null, status: 200, body: stubData.searchResult, headers: new Headers() }))
-        //return this.http.get(`https://buffetbot.azurewebsites.net/api/HttpTriggerJS1?code=ymRrKp/2a5uVuBL49rI2LKlMjYaJohpP9cKVfRvt5tc2TTBUHvx73Q==&page=${page}&q=${query}`)
+        return this.http.post(`https://buffetbot.azurewebsites.net/recipes/search?page=${page}&q=${query}`, null, opts())
                 .map<Response, Food2ForkSearchResult>(resp => resp.json())
                 .map<Food2ForkSearchResult, RecipeSearchResult>(result => ({
                     page: page,

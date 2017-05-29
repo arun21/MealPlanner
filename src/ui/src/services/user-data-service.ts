@@ -10,18 +10,18 @@ export class UserDataService {
     }
 
     list<T>(urlOrRef: string | firebase.database.Reference, opts?: FirebaseListFactoryOpts): FirebaseListObservable<T[]> {
-        return this.af.database.list(this.userPath(urlOrRef), opts);
+        return this.af.database.list(this.getRef(urlOrRef), opts);
     }
 
     object<T>(urlOrRef: string | firebase.database.Reference, opts?: FirebaseObjectFactoryOpts): FirebaseObjectObservable<T> {
-        return this.af.database.object(this.userPath(urlOrRef), opts);
+        return this.af.database.object(this.getRef(urlOrRef), opts);
     }
 
-    private userPath(urlOrRef: string | firebase.database.Reference) {
+    getRef(urlOrRef: string | firebase.database.Reference): firebase.database.Reference {
         if(typeof urlOrRef === "string") {
             let user = firebase.auth().currentUser;
             if(!user) throw 'User not authenticated!';
-            return `/users/${user.uid}${urlOrRef}`;
+            return firebase.database().ref(`/users/${user.uid}${urlOrRef}`);
         }
         
         return urlOrRef;

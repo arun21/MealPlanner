@@ -34,7 +34,7 @@ export class AddRecipeAction implements IAction<AddRecipeActionParams> {
         console.debug('[AddRecipeAction::execute] ', params);
 
         const newRecipe: Recipe = {
-            id: params.url,
+            id: this.userData.getRef('/recipes').push().key,
             imageUrl: params.imageUrl,
             title: params.title,
             url: params.url,

@@ -350,7 +350,17 @@ const searchResult = {
       social_rank: 99.999999998996472,
       publisher_url: "http://allrecipes.com"
     }
-  ]
+  ].map(recipe=> { 
+    (<any>recipe).ingredients = [
+      "4 small chicken breasts, pounded thin",
+      "salt and pepper to taste",
+      "4 jalapenos, diced",
+      "4 ounces cream cheese, room temperature",
+      "1 cup cheddar cheese, shredded",
+      "8 slices bacon\n"
+    ]
+    return recipe;
+  })
 };
 
 export default {
