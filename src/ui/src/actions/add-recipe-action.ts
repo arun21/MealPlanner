@@ -53,9 +53,8 @@ export class AddRecipeAction implements IAction<AddRecipeActionParams> {
 
         console.info('Adding recipe '+ JSON.stringify(newRecipe));
 
-        return this.userData
-                .list<Recipe[]>('/recipes')
-                .push(newRecipe)
+        return this.userData.getRef(`/recipes/${newRecipe.id}`)
+                .set(newRecipe)
                 .then(() => console.log('Successfully added recipe'))
                 .catch((error) => console.error('Error adding recipe: ' + JSON.stringify(error)));
 

@@ -1,10 +1,12 @@
+import * as Raven from 'raven-js';
 import { Component, Input } from '@angular/core';
 import { Recipe } from '../../model';
 import { RecipesStore } from '../../services/recipes-store';
 import { Observable } from "rxjs/Observable";
-import { IonicPage, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController, ToastController } from 'ionic-angular';
 import { RecipePage } from "../recipe";
 import { RecipeSearchPage } from "../recipe-search";
+import { DeleteRecipeAction } from "../../actions/delete-recipe-action";
 
 @IonicPage()
 @Component({
@@ -23,8 +25,15 @@ import { RecipeSearchPage } from "../recipe-search";
       <ion-searchbar [(ngModel)]="filter" (ionInput)="applyFilter($event.target.value)" showCancelButton="true"> </ion-searchbar>
       </ion-toolbar>
     </ion-header>
-    <ion-content padding>
-      <recipe-list [recipes]="recipes | async" (recipeSelected)="onRecipeSelected($event)"></recipe-list>
+    <ion-content padding [ngSwitch]="(recipes | async)?.length">
+      <div *ngSwitchCase="0">
+        <p>You don't have any recipes yet.</p>
+        <p>Why don't you use that "+" button up there to load some?</p>
+      </div>
+      <recipe-list *ngSwitchDefault [recipes]="recipes | async" 
+        (recipeSelected)="onRecipeSelected($event)"
+        (deleteRecipe)="onDeleteRecipe($event)"
+      ></recipe-list>
     </ion-content>
   `
 })
@@ -35,13 +44,29 @@ export class RecipesPage {
 
   constructor(
     private store: RecipesStore,
+    private deleteRecipeAction: DeleteRecipeAction,
     public modal: ModalController,
+    private toast: ToastController,
   ) {
     this.applyFilter(this.filter);
   }
 
   applyFilter(filter: string) {
     this.recipes = this.store.search(this.filter);
+  }
+
+  onDeleteRecipe(recipe: Recipe) {
+    this.deleteRecipeAction.execute(recipe)
+        .then(() => 
+          this.toast.create({
+            message: `Removed ${recipe.title} from your recipe box`,
+            duration: 1000
+          }).present()
+        )
+        .catch(err => {
+          Raven.captureException(err);
+          Raven.showReportDialog({});
+        });
   }
 
   onRecipeSelected(recipe: Recipe) {
