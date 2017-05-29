@@ -23,10 +23,7 @@ export class RecipesStore {
             return Observable.of(RecipesStore.EatOutRecipe);
         }
 
-        let query = this.userData.list<Recipe>(`/recipes`, { query: { orderByChild: 'id', equalTo: recipeId, limitToFirst: 1 }});
-        let first = query.map(x => x[0]);
-
-        return first;
+        return this.userData.object<Recipe>(`/recipes/${recipeId}`);
     }
 
     randomRecipe(): Observable<Recipe> {

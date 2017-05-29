@@ -26,10 +26,19 @@ import { DeleteRecipeAction } from "../../actions/delete-recipe-action";
       </ion-toolbar>
     </ion-header>
     <ion-content padding [ngSwitch]="(recipes | async)?.length">
-      <div *ngSwitchCase="0">
-        <p>You don't have any recipes yet.</p>
-        <p>Why don't you use that "+" button up there to load some?</p>
-      </div>
+      <ion-card *ngSwitchCase="0">
+
+        <ion-card-header text-center>
+          Your Recipe Box is empty!
+        </ion-card-header>
+
+        <ion-card-content text-center>
+          <br>
+          <p>You don't have any recipes yet.</p>
+          <p>Why don't you use that "+" button up there to load some?</p>
+        </ion-card-content>
+
+      </ion-card>
       <recipe-list *ngSwitchDefault [recipes]="recipes | async" 
         (recipeSelected)="onRecipeSelected($event)"
         (deleteRecipe)="onDeleteRecipe($event)"
