@@ -52,6 +52,10 @@ export class SchedulePage {
       this.eatOutAction.execute({ date: entry.date });
   }
 
+  regenerate() {
+    this.generateScheduleAction.execute({ date: new Date() });
+  }
+
   replace(entry: MealScheduleEntry) {
       this.replaceMealAction.execute({ date: entry.date });
   }

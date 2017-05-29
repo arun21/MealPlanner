@@ -1,6 +1,12 @@
 <ion-header no-border>
   <ion-toolbar>
     <ion-title>This Week's Meals</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="regenerate()">
+        Regenerate
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content padding [ngSwitch]="(schedule | async)?.length">

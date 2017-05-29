@@ -42,8 +42,6 @@ export class GenerateScheduleAction implements IAction<GenerateScheduleActionPar
             throw `Invalid schedule generation request - must supply a year/week or a date. (params: ${JSON.stringify(params)})`;
         }
 
-        debugger
-
         console.debug(`Generating schedule for year ${year} and week ${week}...`);
 
         let entries = await this.generateScheduleEntries(year, week);
